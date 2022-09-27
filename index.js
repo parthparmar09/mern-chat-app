@@ -18,15 +18,6 @@ app.use(express.json());
 //jwt verification middleware
 const authorization = require("./middleware/auth");
 
-//for production
-const path = require('path')
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
-  });
- }
-
 // static files
 app.use(express.static("public"));
 //all routes
@@ -34,6 +25,15 @@ app.use("/api/user", require("./routes/user"));
 app.use("/api/img", require("./routes/picUpload"));
 app.use("/api/convo", authorization, require("./routes/conversation"));
 app.use("/api/msg", authorization, require("./routes/message"));
+
+//for production
+const path = require('path')
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'dev') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  });
+ }
 
 //adding error handling middlewares
 const { notFound, errorHandler } = require("./middleware/errorHandler");
