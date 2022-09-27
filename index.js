@@ -12,18 +12,8 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 
-//helmet for additional security
-const helmet = require("helmet");
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-
 //json parser
 app.use(express.json());
-
-//setting headers for all incoming requests
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
 
 //jwt verification middleware
 const authorization = require("./middleware/auth");
